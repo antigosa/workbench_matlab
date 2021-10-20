@@ -30,6 +30,8 @@ if nargin==0
 end
 
 wb_function = strcat('"', wb_cfg.wb_command, '"', ' -label-to-volume-mapping');
+wb_function = strcat(wb_function, ' -nearest-vertex 5');
+
 
 % wb_cmd = [wb_function ' ' '"' expr '"' ' ' '"' variables '"' ' ' '"' metric_fname_out '"'];
 wb_cmd = [wb_function ' ' '"' label_in '"' ' ' '"' surf_file '"' ' ' '"' '' volume_space '"' ' ' '"' '' volume_out];
