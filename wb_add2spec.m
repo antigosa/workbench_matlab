@@ -1,15 +1,10 @@
-function [status,cmdout] = wb_add2spec(wb_cfg, spec_file, scruct_type, fname)
-% function [status,cmdout] = wb_add2spec(wb_cfg, spec_file, scruct_type, fname)
-% %ADD A FILE TO A SPECIFICATION FILE
-%    wb_command -add-to-spec-file
-%       <specfile> - the specification file to add to
-%       <structure> - the structure of the data file
-%       <filename> - the path to the file
-% 
-%       The resulting spec file overwrites the existing spec file.  If the spec
-%       file doesn't exist, it is created with default metadata.  The structure
-%       argument must be one of the following:
-% 
+function [status,cmdout] = wb_add2spec(spec_file, scruct_type, fname)
+% function [status,cmdout] = wb_add2spec(spec_file, scruct_type, fname)
+%
+% scruct_type equal to either 'L' or 'lh' will be set to CORTEX_LEFT
+% scruct_type equal to either 'R' or 'rh' will be set to CORTEX_RIGHT
+% Othewise, use one of the option as listed below
+%  
 %       CORTEX_LEFT
 %       CORTEX_RIGHT
 %       CEREBELLUM
@@ -45,13 +40,25 @@ function [status,cmdout] = wb_add2spec(wb_cfg, spec_file, scruct_type, fname)
 %       THALAMUS_RIGHT
 
 if nargin==0
-    [wb_cfg, spec_file, scruct_type, fname] = wb_add2spec_test;
+    [spec_file, scruct_type, fname] = wb_add2spec_test;
+end
+
+wb_par=wb_parameters;
+wb_command=wb_par.wb_command;
+
+% Choose the structure
+switch scruct_type
+    case {'L', 'lh'}
+        scruct_type = 'CORTEX_LEFT';
+    case {'R', 'rh'}
+        scruct_type = 'CORTEX_RIGHT';
+    otherwise
 end
 
 spec_folder = fileparts(spec_file);
-if ~exist(spec_folder, 'file'); mkdir(spec_folder); end
+if ~isempty(spec_folder) && ~exist(spec_folder, 'dir'); mkdir(spec_folder); end
 
-wb_function = strcat('"', wb_cfg.wb_command, '"', ' -add-to-spec-file');
+wb_function = strcat('"', wb_command, '"', ' -add-to-spec-file');
 
 fname = strrep(fname, '\', '/');
 
@@ -66,9 +73,8 @@ end
 
 % fprintf('added file:\n\t%s');
 
-function [wb_cfg, spec_file, scruct_type, fname] = wb_add2spec_test
+function [spec_file, scruct_type, fname] = wb_add2spec_test
 
-wb_cfg      = wb_parameters;
 spec_file   = './test/test.spec';
 scruct_type = 'CORTEX_LEFT';
 fname       = './test/images_vs_rest_Tstat.nii.L.func.gii';
