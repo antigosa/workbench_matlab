@@ -29,7 +29,7 @@ wb_command=wb_par.wb_command;
 % =========================================================================
 % command string
 % =========================================================================
-wb_cmd=[wb_command ' -metric-convert -from-nifti' cifti_out ' ' nii_fname_in ' ' surf_fname_ref ' ' metric_fname_out];
+wb_cmd=[wb_command ' -metric-convert -from-nifti ' nii_fname_in ' ' surf_fname_ref ' ' metric_fname_out];
 
 % =========================================================================
 % execute program
