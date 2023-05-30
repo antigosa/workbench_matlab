@@ -88,7 +88,7 @@ if isfield(metric_struct, 'lh')
     wb_cmd = [wb_cmd ' -left-metric ' metric_struct.lh];
 end
 if isfield(metric_struct, 'rh')
-    wb_cmd = [wb_cmd ' -right-metric ' metric_struct.lh];    
+    wb_cmd = [wb_cmd ' -right-metric ' metric_struct.rh];    
 end
 
 wb_cmd = [wb_cmd ' -name-file ' map_names_txt];
