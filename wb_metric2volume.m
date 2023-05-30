@@ -1,4 +1,4 @@
-function [status,cmdout] = wb_metric2volume(wb_cfg, metric_in, surf_fname_ref, volume_ref, volume_out, opt)
+function [status,cmdout] = wb_metric2volume(metric_in, surf_fname_ref, volume_ref, volume_out, opt)
 % function [status,cmdout] = wb_map_nii2metric(wb_par, metric_in, surf_fname_ref, volume_ref, volume_out, opt)
 % MAP METRIC FILE TO VOLUME
 %    wb_command -metric-to-volume-mapping
@@ -25,12 +25,21 @@ function [status,cmdout] = wb_metric2volume(wb_cfg, metric_in, surf_fname_ref, v
 %       -volume-to-surface-mapping, then uses the weights in reverse.  
 
 if nargin==0
-    [wb_cfg, metric_in, surf_fname_ref, volume_ref, volume_out] = wb_metric2volume_test;
+    [metric_in, surf_fname_ref, volume_ref, volume_out] = wb_metric2volume_test;
 end
 
-wb_function = strcat('"', wb_cfg.wb_command, '"', ' -metric-to-volume-mapping');
-wb_cmd = [wb_function ' ' '"' metric_in '"' ' ' '"' surf_fname_ref '"' ' ' '"' volume_ref '"' ' ' '"' volume_out '"'];
+if nargin<5
+    opt.method='nearest_vertex';
+    opt.distance=5;
+end
 
+wb_par=wb_parameters;
+wb_command=wb_par.wb_command;
+
+% wb_function = strcat('"', wb_command, '"', ' -metric-to-volume-mapping');
+% wb_cmd = [wb_function ' ' '"' metric_in '"' ' ' '"' surf_fname_ref '"' ' ' '"' volume_ref '"' ' ' '"' volume_out '"'];
+
+wb_cmd=[wb_command ' -metric-to-volume-mapping ' metric_in ' ' surf_fname_ref ' ' volume_ref ' ' volume_out];
 
 switch opt.method
     case 'nearest_vertex'
@@ -43,8 +52,6 @@ switch opt.method
         voxel_subdiv = opt.voxel_subdiv;
         wb_cmd = [wb_cmd ' -ribbon-constrained 5'];        
 end
-
-
 
 
 [status,cmdout] = system(wb_cmd);

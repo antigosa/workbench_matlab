@@ -1,5 +1,5 @@
-function [status,cmdout] = wb_map_nii2metric(wb_cfg, nii_fname_in, surf_fname_ref, metric_fname_out)
-% function [status,cmdout] = wb_map_nii2metric(wb_par, nii_fname_in, surf_fname_ref, metric_fname_out)
+function [status,cmdout] = wb_map_nii2metric(nii_fname_in, surf_fname_ref, metric_fname_out)
+% function [status,cmdout] = wb_map_nii2metric(nii_fname_in, surf_fname_ref, metric_fname_out)
 %
 % FROM WORKBENCH
 % % CONVERT METRIC FILE TO FAKE NIFTI
@@ -20,25 +20,27 @@ function [status,cmdout] = wb_map_nii2metric(wb_cfg, nii_fname_in, surf_fname_re
 %       exactly one of the options.
 
 
-if nargin==0
-    [wb_cfg, nii_fname_in, surf_fname_ref, metric_fname_out] = wb_map_nii2metric_test;
-end
+% =========================================================================
+% wb_command
+% =========================================================================
+wb_par=wb_parameters;
+wb_command=wb_par.wb_command;
 
+% =========================================================================
+% command string
+% =========================================================================
+wb_cmd=[wb_command ' -metric-convert -from-nifti' cifti_out ' ' nii_fname_in ' ' surf_fname_ref ' ' metric_fname_out];
 
-wb_function = strcat('"', wb_cfg.wb_command, '"', ' -metric-convert -from-nifti');
-
-wb_cmd = [wb_function ' ' '"' nii_fname_in '"' ' ' '"' surf_fname_ref '"' ' ' '"' metric_fname_out '"'];
-
+% =========================================================================
+% execute program
+% =========================================================================
 [status,cmdout] = system(wb_cmd);
+
+% =========================================================================
+% check output
+% =========================================================================
 if isempty(cmdout)
     fprintf('file %s mapped on metric %s\n', nii_fname_in, metric_fname_out)
 else
     display(cmdout);
 end
-
-function [wb_cfg, nii_file, surf_file, metric_file] = wb_map_nii2metric_test
-
-wb_cfg      = wb_parameters;
-nii_file    = 'D:\Projects\STATES\analysis\data\group\stat\2BS1BV_smth8\onesampleT\all vs rest\spmT_0001.nii';
-surf_file   = 'C:\Users\UCJT035\neuro Programs\workbench\data\Glasser_et_al_2016_HCP_MMP1.0_RVVG\HCP_PhaseTwo\Q1-Q6_RelatedParcellation210\MNINonLinear\fsaverage_LR32k\Q1-Q6_RelatedParcellation210.L.pial_MSMAll_2_d41_WRN_DeDrift.32k_fs_LR.surf.gii';
-metric_file    = './test/states_allVSrest_spmT_0001_METRIC.nii.func.gii';

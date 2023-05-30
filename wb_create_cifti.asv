@@ -94,17 +94,11 @@ end
 wb_cmd = [wb_cmd ' -name-file ' map_names_txt];
 
 if exist('volume_cell', 'var')
-    wb_cmd = [wb_cmd ' -volume ' volume_cell{1} ' ' volume_cell{2}];
+    wb_cmd = [wb_cmd ' -volume ' volume_cell{1} ' ' ' '"' volume_cell{2} '"'];
 end
 
-% =========================================================================
-% execute program
-% =========================================================================
-[status,cmdout] = system(wb_cmd);
 
-% =========================================================================
-% check output
-% =========================================================================
+[status,cmdout] = system(wb_cmd);
 if status ~= 0
     display(cmdout);
 else

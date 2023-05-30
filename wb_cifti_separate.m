@@ -1,5 +1,5 @@
-function [status,cmdout] = wb_cifti_separate(wb_cfg, cifti_in, direction, data_type, brain_struct, cifti_out)
-% function [status,cmdout] = wb_cifti_separate(wb_cfg, cifti_in, direction, data_type, brain_struct, cifti_out)
+function [status,cmdout] = wb_cifti_separate(cifti_in, direction, data_type, brain_struct, fname_out)
+% function [status,cmdout] = wb_cifti_separate(cifti_in, direction, data_type, brain_struct, cifti_out)
 % FROM: https://figshare.com/articles/HCP-MMP1_0_projected_on_fsaverage/3498446/2
 % 
 % e.g. wb_command -cifti-separate Q1-Q6_RelatedParcellation210.L.CorticalAreas_dil_Colors.32k_fs_LR.dlabel.nii COLUMN -label CORTEX_LEFT Q1-Q6_RelatedParcellation210.L.CorticalAreas_dil_Colors.32k_fs_LR.label.gii
@@ -93,22 +93,35 @@ function [status,cmdout] = wb_cifti_separate(wb_cfg, cifti_in, direction, data_t
 
 
 if nargin==0
-    [wb_cfg, cifti_in, direction, data_type, brain_struct, cifti_out] = wb_cifti_separate_test;
+    [cifti_in, direction, data_type, brain_struct, fname_out] = wb_cifti_separate_test;
 end
+
+
 
 
 % =========================================================================
 % wb_command
 % =========================================================================
-wb_function = strcat('"', wb_cfg.wb_command, '"', ' -cifti-separate');
-
+wb_par=wb_parameters;
+wb_command=wb_par.wb_command;
 
 % =========================================================================
 % command string
 % =========================================================================
-wb_cmd = [wb_function ' ' '"' cifti_in '"' ' ' '"' direction '"' ...
-    ' ' '"' data_type '"' ' ' '"' brain_struct '"' ' ' '"' cifti_out '"' 
-    ];
+switch data_type
+    case 'volume'
+        data_type='-volume';
+        %         direction='COLUMN';
+        wb_cmd=[wb_command ' -cifti-separate ' cifti_in ' ' direction ' ' data_type ' ' brain_struct ' ' fname_out];
+        
+    case 'volume_all'
+        data_type='-volume-all';
+        wb_cmd=[wb_command ' -cifti-separate ' cifti_in ' ' direction ' ' data_type ' ' fname_out];
+        
+    otherwise
+        wb_cmd=[wb_command ' -cifti-separate ' cifti_in ' ' direction ' ' data_type ' ' brain_struct ' ' fname_out];
+        
+end
 
 
 % =========================================================================
@@ -125,12 +138,21 @@ else
     display(cmdout);
 end
 
-function [wb_cfg, cifti_in, direction, data_type, brain_struct, cifti_out] = wb_cifti_separate_test
+function [cifti_in, direction, data_type, brain_struct, fname_out] = wb_cifti_separate_test
 
-cd('D:\Data\fmri\Glasser_et_al_2016_HCP_MMP1.0_RVVG\HCP_PhaseTwo\Q1-Q6_RelatedParcellation210\MNINonLinear\fsaverage_LR32k');
-wb_cfg          = wb_parameters;
-cifti_in        = './Q1-Q6_RelatedParcellation210.CorticalAreas_dil_Colors.32k_fs_LR.dlabel.nii';
+cd('D:\Data\fmri\Glasser_et_al_2016_HCP_MMP1.0_RVVG\HCP_PhaseTwo\Q1-Q6_RelatedParcellation210\MNINonLinear\');
+
+% cd('fsaverage_LR32k');
+% cifti_in        = './Q1-Q6_RelatedParcellation210.CorticalAreas_dil_Colors.32k_fs_LR.dlabel.nii';
+% direction       = 'COLUMN';
+% data_type       = '-label';
+% brain_struct    = 'CORTEX_LEFT';
+% fname_out       = './Q1-Q6_RelatedParcellation210.CorticalAreas_dil_Colors.32k_fs_LR.label.gii';
+
+cd('Results');cd('tfMRI_ALLTASKS');
+cifti_in        = './Q1-Q6_RelatedParcellation210_tfMRI_ALLTASKS_level3_hp200_s2_MSMAll_2_d41_WRN_DeDrift.dscalar.nii';
 direction       = 'COLUMN';
-data_type       = '-label';
-brain_struct    = 'CORTEX_LEFT';
-cifti_out       = './Q1-Q6_RelatedParcellation210.CorticalAreas_dil_Colors.32k_fs_LR.label.gii';
+data_type       = 'volume_all';
+brain_struct    = 'OTHER';
+fname_out       = './ALLTASKS.nii.gz';
+

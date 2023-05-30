@@ -1,5 +1,5 @@
-function [status,cmdout] = wb_file_info(fname)
-% function [status,cmdout] = wb_file_info(wb_par, surf_file)
+function [status,cmdout] = wb_file_information(fname, opt)
+% function [status,cmdout] = wb_file_information(fname, opt)
 %    wb_command -file-information
 %       <data-file> - data file
 % 
@@ -21,27 +21,27 @@ function [status,cmdout] = wb_file_info(fname)
 %       may be specified.  The information listed when no -only option is present
 %       is dependent upon the type of data file.
 
-% =========================================================================
-% wb_command
-% =========================================================================
+if nargin==0
+    fname = wb_file_info_test;
+end
+
 wb_par=wb_parameters;
 wb_command=wb_par.wb_command;
 
-% =========================================================================
-% command string
-% =========================================================================
+% wb_function = strcat('"', wb_cfg.wb_command, '"', ' -file-information');
+% 
+% wb_cmd = [wb_function ' ' '"' fname '"'];
+
 wb_cmd=[wb_command ' -file-information ' fname];
 
-% =========================================================================
-% execute program
-% =========================================================================
 [status,cmdout] = system(wb_cmd);
-
-% =========================================================================
-% check output
-% =========================================================================
-if isempty(cmdout)
-    fprintf('-surface-closest-vertex executed correclty\n')
-else
+if ~isempty(cmdout)
     display(cmdout);
 end
+
+function fname = wb_file_info_test
+
+[~, glasser_fn]  = fmri_glasser_files;
+
+fname = fullfile(glasser_fn.folder, 'Results\tfMRI_ALLTASKS', 'Q1-Q6_RelatedParcellation210_tfMRI_ALLTASKS_level3_beta_hp200_s2_MSMAll_2_d41_WRN_DeDrift_norm.dscalar.nii');
+% fname   = 'D:\Projects\RESPACT\analysis\results\univariate\group\ttest\onesampleT\smth8\catch_vs_images_FDR_mask.nii.R.func.gii';

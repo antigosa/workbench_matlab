@@ -58,11 +58,13 @@ end
 spec_folder = fileparts(spec_file);
 if ~isempty(spec_folder) && ~exist(spec_folder, 'dir'); mkdir(spec_folder); end
 
-wb_function = strcat('"', wb_command, '"', ' -add-to-spec-file');
+% wb_function = strcat('"', wb_command, '"', ' -add-to-spec-file');
+% 
+% fname = strrep(fname, '\', '/');
+% 
+% wb_cmd = [wb_function ' ' '"' spec_file '"'   ' "' scruct_type '" ' '"' fname '"'];
 
-fname = strrep(fname, '\', '/');
-
-wb_cmd = [wb_function ' ' '"' spec_file '"'   ' "' scruct_type '" ' '"' fname '"'];
+wb_cmd=[wb_command ' -add-to-spec-file ' spec_file ' ' scruct_type ' ' fname];
 
 [status,cmdout] = system(wb_cmd);
 if status ~= 0
