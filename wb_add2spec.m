@@ -15,9 +15,9 @@ wb_command=wb_par.wb_command;
 if isempty(scruct_type); scruct_type='';end
 
 switch scruct_type
-    case {'L', 'lh'}
+    case {'L', 'lh', 'CORTEX_LEFT'}
         scruct_type = 'CORTEX_LEFT';
-    case {'R', 'rh'}
+    case {'R', 'rh', 'CORTEX_RIGHT'}
         scruct_type = 'CORTEX_RIGHT';
     otherwise
         scruct_type = 'OTHER';

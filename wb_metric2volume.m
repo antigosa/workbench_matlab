@@ -1,5 +1,5 @@
 function [status,cmdout] = wb_metric2volume(metric_in, surf_fname_ref, volume_ref, volume_out, opt)
-% function [status,cmdout] = wb_map_nii2metric(wb_par, metric_in, surf_fname_ref, volume_ref, volume_out, opt)
+% function [status,cmdout] = wb_map_nii2metric(metric_in, surf_fname_ref, volume_ref, volume_out, opt)
 % MAP METRIC FILE TO VOLUME
 %    wb_command -metric-to-volume-mapping
 %       <metric> - the input metric file
