@@ -81,20 +81,20 @@ wb_command=wb_par.wb_command;
 % =========================================================================
 % command string
 % =========================================================================
-wb_cmd=[wb_command ' -cifti-create-dense-scalar ' cifti_out];
+wb_cmd=['"' wb_command '" -cifti-create-dense-scalar "' cifti_out '"' ];
 
 
 if isfield(metric_struct, 'lh')
-    wb_cmd = [wb_cmd ' -left-metric ' metric_struct.lh];
+    wb_cmd = [wb_cmd ' -left-metric "' metric_struct.lh '"'];
 end
 if isfield(metric_struct, 'rh')
-    wb_cmd = [wb_cmd ' -right-metric ' metric_struct.rh];    
+    wb_cmd = [wb_cmd ' -right-metric "' metric_struct.rh '"'];    
 end
 
-wb_cmd = [wb_cmd ' -name-file ' map_names_txt];
+wb_cmd = [wb_cmd ' -name-file "' map_names_txt '"'];
 
 if exist('volume_cell', 'var')
-    wb_cmd = [wb_cmd ' -volume ' volume_cell{1} ' ' volume_cell{2}];
+    wb_cmd = [wb_cmd ' -volume "' volume_cell{1} '" "' volume_cell{2} '"'];
 end
 
 % =========================================================================
@@ -110,5 +110,3 @@ if status ~= 0
 else
     fprintf('created cifti %s succesfully\n', cifti_out);
 end
-
-

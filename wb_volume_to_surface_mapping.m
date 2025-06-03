@@ -75,7 +75,7 @@ wb_command=wb_par.wb_command;
 % =========================================================================
 % command string
 % =========================================================================
-wb_cmd=[wb_command ' -volume-to-surface-mapping ' volume ' ' surface ' ' metric_out ' ' opts.method];
+wb_cmd=['"' wb_command '" -volume-to-surface-mapping "' volume '" "' surface '" "' metric_out '" ' opts.method];
 
 
 % =========================================================================

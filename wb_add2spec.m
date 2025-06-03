@@ -29,7 +29,7 @@ if ~isempty(spec_folder) && ~exist(spec_folder, 'dir'); mkdir(spec_folder); end
 % =========================================================================
 % command string
 % =========================================================================
-wb_cmd=[wb_command ' -add-to-spec-file ' spec_file ' ' scruct_type ' ' fname];
+wb_cmd=[wb_command ' -add-to-spec-file "' spec_file '" ' scruct_type ' "' fname '"'];
 
 % =========================================================================
 % execute program
