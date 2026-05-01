@@ -6,13 +6,11 @@ if nargin==0
     [cifti_in, scale_mode, cifti_out, col, paletteName, neg_minMaxVal, pos_minMaxVal, thresholdInfo, opts] = wb_cifti_palette_test;
 end
 
-if nargin==6
+if nargin<8
     thresholdInfo       = [];
-    opts.disp_pos       = 'true';
-    opts.disp_neg       = 'true';
 end
 
-if nargin==7
+if nargin<9
     opts.disp_pos       = 'true';
     opts.disp_neg       = 'true';
 end
@@ -26,7 +24,7 @@ switch scale_mode
         pos_str = '-pos-user';
         neg_str = '-neg-user';
         
-    case 'MODE_AUTO_SCALE_ABSOLUTE_PERCENTAGE'        
+    case 'MODE_AUTO_SCALE_ABSOLUTE_PERCENTAGE'
         pos_str = '-pos-percent';
         neg_str = '-neg-percent';
         
@@ -35,7 +33,7 @@ switch scale_mode
         neg_str = '-neg-percent';
         
     case 'MODE_AUTO_SCALE'
-    
+        
 end
 
 if isnumeric(col)
@@ -70,14 +68,23 @@ wb_command=wb_par.wb_command;
 % =========================================================================
 % command string
 % =========================================================================
-wb_cmd=[wb_command ' -cifti-palette ' cifti_in ' ' scale_mode ' ' cifti_out ' -column ' col ' -palette-name ' paletteName ' ' ...
+wb_cmd=[wb_command ' -cifti-palette "' cifti_in '" ' scale_mode ' "' cifti_out '" -column ' col ' -palette-name ' paletteName ' ' ...
     neg_str ' ' num2str(neg_minMaxVal(1)) ' ' num2str(neg_minMaxVal(2)) ' ' pos_str ' ' num2str(pos_minMaxVal(1)) ' ' num2str(pos_minMaxVal(2)) ' ', ...
     ' -disp-pos ' opts.disp_pos ' -disp-neg ' opts.disp_neg];
 
 
 if ~isempty(thresholdInfo)
-    wb_cmd = [wb_cmd ' ', ...
-        ' -thresholding ' thresholdInfo{1} ' ' thresholdInfo{2} ' ' num2str(thresholdInfo{3}) ' ' num2str(thresholdInfo{4})];
+    
+    if iscell(thresholdInfo)
+        
+        wb_cmd = [wb_cmd ' ', ...
+            ' -thresholding ' thresholdInfo{1} ' ' thresholdInfo{2} ' ' num2str(thresholdInfo{3}) ' ' num2str(thresholdInfo{4})];
+        
+    else % isstruct
+        
+        wb_cmd = [wb_cmd ' ', ...
+            ' -thresholding ' thresholdInfo.type ' ' thresholdInfo.show ' ' num2str(thresholdInfo.minmax(1)) ' ' num2str(thresholdInfo.minmax(2))];
+    end
 end
 
 % =========================================================================

@@ -1,5 +1,6 @@
 function [status,cmdout] = wb_volume_find_cluster(wb_cfg, volume_in, threshold, min_vol, volume_out, roi_name)
 % function [status,cmdout] = wb_metric_find_cluster(wb_cfg, volume_in, threshold, min_vol, volume_out, roi_name)
+% OLD?
 
 if nargin==0
     [wb_cfg, volume_in, threshold, min_vol, volume_out, roi_name] = wb_add2spec_test;

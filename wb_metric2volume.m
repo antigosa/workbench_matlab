@@ -36,10 +36,8 @@ end
 wb_par=wb_parameters;
 wb_command=wb_par.wb_command;
 
-% wb_function = strcat('"', wb_command, '"', ' -metric-to-volume-mapping');
-% wb_cmd = [wb_function ' ' '"' metric_in '"' ' ' '"' surf_fname_ref '"' ' ' '"' volume_ref '"' ' ' '"' volume_out '"'];
 
-wb_cmd=[wb_command ' -metric-to-volume-mapping ' metric_in ' ' surf_fname_ref ' ' volume_ref ' ' volume_out];
+wb_cmd=[wb_command ' -metric-to-volume-mapping "' metric_in '" "' surf_fname_ref '" "' volume_ref '" "' volume_out '"'];
 
 switch opt.method
     case 'nearest_vertex'

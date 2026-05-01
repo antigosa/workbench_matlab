@@ -1,4 +1,4 @@
-function [status,cmdout] = wb_volume_find_clusters(volume_in, thrsh_val, min_val, volume_out)
+function [status,cmdout] = wb_volume_find_clusters(volume_in, thrsh_val, min_vol, volume_out, opt)
 % FILTER CLUSTERS BY VOLUME
 %    wb_command -volume-find-clusters
 %       <volume-in> - the input volume
@@ -36,6 +36,9 @@ function [status,cmdout] = wb_volume_find_clusters(volume_in, thrsh_val, min_val
 %       test for values less than the threshold.  To apply this as a mask to the
 %       data, or to do more complicated thresholding, see -volume-math.
 
+
+if nargin<5; opt=[];end
+
 % =========================================================================
 % wb_command
 % =========================================================================
@@ -43,13 +46,21 @@ wb_par=wb_parameters;
 wb_command=wb_par.wb_command;
 
 if isnumeric(thrsh_val); thrsh_val=num2str(thrsh_val);end
-if isnumeric(min_val); min_val=num2str(min_val);end
+if isnumeric(min_vol); min_vol=num2str(min_vol);end
 
 % =========================================================================
 % command string
 % =========================================================================
-wb_cmd=['"' wb_command '" -volume-find-clusters "' volume_in '" '  thrsh_val ' ' min_val ' "' volume_out '"'];
+wb_cmd=['"' wb_command '" -volume-find-clusters "' volume_in '" '  thrsh_val ' ' min_vol ' "' volume_out '"'];
 
+
+if ~isempty(opt)
+    fn = fieldnames(opt);
+    for i = 1:length(fn)
+        wb_cmd=[wb_cmd sprintf(' -%s %d', fn{i}, opt.(fn{i}))];
+    end
+    
+end
 
 % =========================================================================
 % execute program

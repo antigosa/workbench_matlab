@@ -18,7 +18,7 @@ switch scruct_type
     otherwise        
 end
 
-system([wb_command ' -set-structure ' data_fname ' ' scruct_type]);
+system([wb_command ' -set-structure "' data_fname '" ' scruct_type]);
 
 % Give feedback
 fprintf('Structure set for file: %s saved\n', data_fname)

@@ -11,12 +11,12 @@ wb_command=wb_par.wb_command;
 % =========================================================================
 % command string
 % =========================================================================
-wb_cmd=[wb_command ' -foci-create ' foci_out];
+wb_cmd=[wb_command ' -foci-create "' foci_out '"'];
 
 fn = fieldnames(foci_fn);
 nclasses = length(fn);
 for i = 1:nclasses
-    wb_cmd=[wb_cmd ' -class ' fn{i} ' ' foci_fn.(fn{i}) ' ' surface_fn];
+    wb_cmd=[wb_cmd ' -class "' fn{i} '" "' foci_fn.(fn{i}) '" "' surface_fn '"'];
 end
 
 

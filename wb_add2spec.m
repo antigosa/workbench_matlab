@@ -26,6 +26,18 @@ end
 spec_folder = fileparts(spec_file);
 if ~isempty(spec_folder) && ~exist(spec_folder, 'dir'); mkdir(spec_folder); end
 
+
+[file_exist, opt] = isfile_inSpec(spec_file, fname);
+
+if file_exist
+    
+    [~, f_name, f_ext] = fileparts(fname);
+    fname = strcat(f_name, f_ext);
+    warning('The file %s exists already in this spec file, I won''t add it again', fname);
+    warning('DIR: %s', opt.dirs_inSpec{opt.file_exist==1});
+    return;
+end
+
 % =========================================================================
 % command string
 % =========================================================================
@@ -40,7 +52,7 @@ wb_cmd=[wb_command ' -add-to-spec-file "' spec_file '" ' scruct_type ' "' fname 
 % check output
 % =========================================================================
 if status ~= 0
-    display(cmdout)
+    display(cmdout);
 else
     fprintf('file %s succesfully added to %s\n', fname, spec_file);
 end
